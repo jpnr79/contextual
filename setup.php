@@ -117,7 +117,7 @@ function plugin_version_contextual() {
              'author'         => 'CARM',
              'license'        => 'GPLv2+',
              'homepage'       => 'http://www.carm.es',
-             'minGlpiVersion' => '9.4'];
+             'requirements'   => ['glpi' => ['min' => '11.0', 'max' => '12.0']]];
 }
 
 // Optional : check prerequisites before install : may print errors or add to message after redirect
