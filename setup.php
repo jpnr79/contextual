@@ -76,7 +76,7 @@ function plugin_init_contextual() {
 	if ($Plugin->isActivated('contextual')) {	
 
         //if (strpos($_SERVER["SCRIPT_FILENAME"], 'message.form.php') !== false) {
-            if (strpos($_SERVER['REQUEST_URI'], "message.form.php") !== false
+            if (isset($_SERVER['REQUEST_URI']) && strpos($_SERVER['REQUEST_URI'], "message.form.php") !== false
                && isset($_GET['id'])) {            	
             
             $PLUGIN_HOOKS['add_javascript']['contextual']=array('lib/searchform/js/search_form.js',

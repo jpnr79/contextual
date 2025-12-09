@@ -430,7 +430,9 @@ class PluginContextualContextual extends CommonDBTM {
             // get tabs and loop over
             $ong = $item->defineAllTabs(['withtemplate' => $withtemplate]);
 
-            if (!$tabs->isLayoutExcludedPage() && $tabs->isLayoutWithMain()) {
+            if (method_exists($tabs, 'isLayoutExcludedPage') && 
+                method_exists($tabs, 'isLayoutWithMain') &&
+                !$tabs->isLayoutExcludedPage() && $tabs->isLayoutWithMain()) {
                //on classical and vertical split; the main tab is always displayed
                array_shift($ong);
             }
