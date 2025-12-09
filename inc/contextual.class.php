@@ -37,28 +37,28 @@ class PluginContextualContextual extends CommonDBTM {
    
    static $rightname = "plugin_contextual";
 
-  static function canView() {
+  static function canView(): bool {
       return Session::haveRight(self::$rightname, READ);
    }
 
-   function canViewItem() {
+   function canViewItem(): bool {
       return (Session::haveRight(self::$rightname, READ)
               );
    }
 
-   function canCreateItem() {
+   function canCreateItem(): bool {
       return Session::haveRight(self::$rightname, CREATE);
    }
  
-   function canUpdateItem() {
+   function canUpdateItem(): bool {
       return ((Session::haveRight(self::$rightname, UPDATE)) || ($_SESSION['glpiactiveprofile']['id']==='4'));
    } 
 
-   function canDeleteItem() {
+   function canDeleteItem(): bool {
       return ((Session::haveRight(self::$rightname, CREATE)) || ($_SESSION['glpiactiveprofile']['id']==='4'));
    } 
 
-   function canPurgeItem() {
+   function canPurgeItem(): bool {
       return ((Session::haveRight(self::$rightname, CREATE)) || ($_SESSION['glpiactiveprofile']['id']==='4'));
    }   
 
@@ -139,42 +139,42 @@ class PluginContextualContextual extends CommonDBTM {
    }
 
    static function install(Migration $migration) {
-      global $DB;
+      global $DB, $CFG_GLPI;
       
       $table = getTableForItemType(__CLASS__);
 
 			Session::addMessageAfterRedirect(__('			
 			<table>
 	<tr>
-	<td align="left"><img style="vertical-align:middle;" alt="" src="'.$_SESSION["glpiroot"].'/plugins/contextual/img/install.png">&nbsp;&nbsp;</td>
+	<td align="left"><img style="vertical-align:middle;" alt="" src="'.$CFG_GLPI['root_doc'].'/plugins/contextual/img/install.png">&nbsp;&nbsp;</td>
 	<td class="center">&nbsp;
 	<FONT color="#4f35a2"><strong>Instalación</strong> realizada con <strong></font><font color="green">Éxito</font></strong> <br>- - - - - - - - - - - - - - - - - - <br>
 	<font color="green"><strong>Plugin PluginContextualContextual</strong></font><FONT color="#4f35a2"> versión </font><strong><font color="green">'. PLUGIN_CONTEXTUAL_VERSION .'</font></strong>		
 	</td>
 	
 	</tr>
-</table><FONT color="#4f35a2"><br>Instalando Tablas.....</FONT><table>','plugin_contextual'),true, INFO);	
+</table><FONT color="#4f35a2"><br>Instalando Tablas.....</FONT><table>','plugin_contextual'),true, INFO);
 
       if (!$DB->TableExists($table)) {
          $query = "CREATE TABLE IF NOT EXISTS `$table` (                  				  
-				  `id` int(11) NOT NULL AUTO_INCREMENT,
-				  `itemtype` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-				  `field` varchar(255) COLLATE utf8_unicode_ci NOT NULL,				  
-				  `content` LONGTEXT COLLATE utf8_unicode_ci DEFAULT NULL,				 				  
+				  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+				  `itemtype` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+				  `field` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,				  
+				  `content` LONGTEXT COLLATE utf8mb4_unicode_ci DEFAULT NULL,				 				  
 				  `date_creation` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-				  `date_mod` datetime DEFAULT NULL,	
-				  `entities_id` int(11) NOT NULL DEFAULT '0',
+				  `date_mod` TIMESTAMP NULL DEFAULT NULL,	
+				  `entities_id` BIGINT UNSIGNED NOT NULL DEFAULT '0',
 				  `is_recursive` tinyint(1) NOT NULL DEFAULT '0',				  
 				  PRIMARY KEY (`itemtype`, `field`),				  
 				  KEY `id` (`id`),
 				  KEY `entities_id` (`entities_id`),
 				  KEY `is_recursive` (`is_recursive`)
-               ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
-         $DB->query($query) or die ("Error adding table $table");		 
+               ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci";
+         $DB->doQuery($query) or die ("Error adding table $table");		 
          		 
 		$tabla='
 			  <tr>
-				<td colspan="2" align="left">&nbsp;&nbsp;<img style="vertical-align:middle;" alt="" src="'.$_SESSION["glpiroot"].'/plugins/contextual/img/check.png">&nbsp;
+				<td colspan="2" align="left">&nbsp;&nbsp;<img style="vertical-align:middle;" alt="" src="'.$CFG_GLPI['root_doc'].'/plugins/contextual/img/check.png">&nbsp;
 				&nbsp;<strong><FONT color="#3a9b26">'.$table.'</FONT>.</strong>				
 				</td>
 			  </tr>
@@ -185,17 +185,15 @@ class PluginContextualContextual extends CommonDBTM {
 		 
       }
 
-			if (!$DB->fieldExists($table,"title")){ 
+		if (!$DB->fieldExists($table,"title")){ 
 
-				$query = "ALTER TABLE $table 
-				ADD COLUMN `title` VARCHAR(255) NULL AFTER `field`;";
+			$query = "ALTER TABLE $table 
+			ADD COLUMN `title` VARCHAR(255) NULL AFTER `field`;";
         
-				$DB->query($query) or die ("Error adding table $table");
-
-				$tabla='<FONT color="#4f35a2"><br>Campo <strong>`title`</strong> añadido en la tabla:</FONT>
+			$DB->doQuery($query) or die ("Error adding table $table");				$tabla='<FONT color="#4f35a2"><br>Campo <strong>`title`</strong> añadido en la tabla:</FONT>
 				<table>
 				 <tr>
-				 <td colspan="2" align="left">&nbsp;&nbsp;<img style="vertical-align:middle;" alt="" src="'.$_SESSION["glpiroot"].'/plugins/contextual/img/check.png">&nbsp;
+				 <td colspan="2" align="left">&nbsp;&nbsp;<img style="vertical-align:middle;" alt="" src="'.$CFG_GLPI['root_doc'].'/plugins/contextual/img/check.png">&nbsp;
 				 &nbsp;<strong><FONT color="#3a9b26">'.$table.'</FONT>.</strong>				
 				 </td>
 				 </tr>

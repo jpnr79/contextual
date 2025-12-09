@@ -37,28 +37,28 @@ class PluginContextualMessage extends CommonDBTM {
    
    static $rightname = "plugin_contextual_message";
 
-  static function canView() {
+  static function canView(): bool {
       return Session::haveRight(self::$rightname, READ);
    }
 
-   function canViewItem() {
+   function canViewItem(): bool {
       return (Session::haveRight(self::$rightname, READ)
               );
    }
 
-   function canCreateItem() {
+   function canCreateItem(): bool {
       return Session::haveRight(self::$rightname, CREATE);
    }
  
-   function canUpdateItem() {
+   function canUpdateItem(): bool {
       return ((Session::haveRight(self::$rightname, UPDATE)) || ($_SESSION['glpiactiveprofile']['id']==='4'));
    } 
 
-   function canDeleteItem() {
+   function canDeleteItem(): bool {
       return ((Session::haveRight(self::$rightname, CREATE)) || ($_SESSION['glpiactiveprofile']['id']==='4'));
    } 
 
-   function canPurgeItem() {
+   function canPurgeItem(): bool {
       return ((Session::haveRight(self::$rightname, CREATE)) || ($_SESSION['glpiactiveprofile']['id']==='4'));
    }   
 
@@ -105,47 +105,45 @@ class PluginContextualMessage extends CommonDBTM {
 	}	 
 	  
    static function install(Migration $migration) {
-      global $DB;
+      global $DB, $CFG_GLPI;
       
       $table = getTableForItemType(__CLASS__);
 
       if (!$DB->TableExists($table)) {
-					$query ="CREATE TABLE IF NOT EXISTS `$table` (
-										`id` int(11) NOT NULL AUTO_INCREMENT,
-										`name` text COLLATE utf8_unicode_ci,
-										`content` longtext COLLATE utf8_unicode_ci,
-										`users_id` int(11) NOT NULL DEFAULT '0',
-										`view` int(11) NOT NULL DEFAULT '0',
-										`date_creation` datetime DEFAULT NULL,
-										`date_mod` datetime DEFAULT NULL,
-										`begin_date` datetime DEFAULT NULL,
-										`end_date` datetime DEFAULT NULL,
-										`entities_id` int(11) NOT NULL DEFAULT '0',
-  									`is_recursive` tinyint(1) NOT NULL DEFAULT '0',										
-										PRIMARY KEY (`id`),
-										KEY `users_id` (`users_id`),										
-										KEY `date_creation` (`date_creation`),
-										KEY `date_mod` (`date_mod`),
-										KEY `begin_date` (`begin_date`),
-										KEY `end_date` (`end_date`),
-										KEY `entities_id` (`entities_id`),
- 			 							KEY `is_recursive` (`is_recursive`),										
-										FULLTEXT KEY `fulltext` (`name`,`content`),
-										FULLTEXT KEY `name` (`name`),
-										FULLTEXT KEY `content` (`content`)
-									)  ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
+				$query ="CREATE TABLE IF NOT EXISTS `$table` (
+									`id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+									`name` text COLLATE utf8mb4_unicode_ci,
+									`content` longtext COLLATE utf8mb4_unicode_ci,
+									`users_id` BIGINT UNSIGNED NOT NULL DEFAULT '0',
+									`view` BIGINT UNSIGNED NOT NULL DEFAULT '0',
+									`date_creation` TIMESTAMP NULL DEFAULT NULL,
+									`date_mod` TIMESTAMP NULL DEFAULT NULL,
+									`begin_date` TIMESTAMP NULL DEFAULT NULL,
+									`end_date` TIMESTAMP NULL DEFAULT NULL,
+									`entities_id` BIGINT UNSIGNED NOT NULL DEFAULT '0',
+  									`is_recursive` tinyint(1) NOT NULL DEFAULT '0',									
+									PRIMARY KEY (`id`),
+									KEY `users_id` (`users_id`),									
+									KEY `date_creation` (`date_creation`),
+									KEY `date_mod` (`date_mod`),
+									KEY `begin_date` (`begin_date`),
+									KEY `end_date` (`end_date`),
+									KEY `entities_id` (`entities_id`),
+ 			 							KEY `is_recursive` (`is_recursive`),									
+									FULLTEXT KEY `fulltext` (`name`,`content`),
+									FULLTEXT KEY `name` (`name`),
+									FULLTEXT KEY `content` (`content`)
+								)  ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci";
 
-        $DB->query($query) or die ("Error adding table $table");		 
+        $DB->doQuery($query) or die ("Error adding table $table");		 
          		 
-				$tabla='
-						<tr>
-						<td colspan="2" align="left">&nbsp;&nbsp;<img style="vertical-align:middle;" alt="" src="'.$_SESSION["glpiroot"].'/plugins/contextual/img/check.png">&nbsp;
-						&nbsp;<strong><FONT color="#3a9b26">'.$table.'</FONT>.</strong>				
-						</td>
-						</tr>
-						</table>';
-			  			  
-				 
+			$tabla='
+					<tr>
+					<td colspan="2" align="left">&nbsp;&nbsp;<img style="vertical-align:middle;" alt="" src="'.$CFG_GLPI['root_doc'].'/plugins/contextual/img/check.png">&nbsp;
+					&nbsp;<strong><FONT color="#3a9b26">'.$table.'</FONT>.</strong>				
+					</td>
+					</tr>
+					</table>';				 
 				Session::addMessageAfterRedirect($tabla);	
 				
 				$migration->updateDisplayPrefs([

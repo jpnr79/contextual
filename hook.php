@@ -80,26 +80,42 @@ function plugin_contextual_install() {
     $migration = new Migration(PLUGIN_CONTEXTUAL_VERSION);   
 
     PluginContextualContextual::install($migration);
-		PluginContextualMessage_User::install($migration);
-		PluginContextualMessage::install($migration);
-		PluginContextualMessage_Profile::install($migration);
+	PluginContextualMessage_User::install($migration);
+	PluginContextualMessage::install($migration);
+	PluginContextualMessage_Profile::install($migration);
 
-    $query = "SELECT * FROM INFORMATION_SCHEMA.TABLES
-WHERE TABLE_SCHEMA in ('".$DB->dbdefault."') and table_name LIKE 'glpi_plugin_contextual_%' and TABLE_TYPE = 'BASE TABLE'";
+    // Count contextual tables using criteria API instead of raw query
+	$criteria = [
+		'FROM' => 'information_schema.TABLES',
+		'WHERE' => [
+			'TABLE_SCHEMA' => $DB->dbdefault,
+			'TABLE_NAME' => ['LIKE', 'glpi_plugin_contextual_%'],
+			'TABLE_TYPE' => 'BASE TABLE'
+		],
+		'COUNT' => 'id'
+	];
+	$rows = 0;
+	try {
+		$rows = $DB->request($criteria)->count();
+	} catch (Exception $e) {
+		// If information_schema query fails, count tables manually
+		$tables = ['glpi_plugin_contextual_contextuals', 'glpi_plugin_contextual_message_users', 'glpi_plugin_contextual_messages', 'glpi_plugin_contextual_message_profiles'];
+		$rows = 0;
+		foreach ($tables as $table) {
+			if ($DB->tableExists($table)) {
+				$rows++;
+			}
+		}
+	}
 
-	$result = $DB->query($query);
-	$rows=$DB->numrows($result);
-
-			 $tabla= '<table><tr>
-				<td class="center" colspan="2">- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -<br>
-				<strong>Tablas instaladas</strong>: <strong><FONT color="#3a9b26">'.$rows.'</FONT></strong><br>
-				- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -<br>
-				</td>
-			  </tr></table>';  
+		 $tabla= '<table><tr>
+			<td class="center" colspan="2">- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -<br>
+			<strong>Tablas instaladas</strong>: <strong><FONT color="#3a9b26">'.$rows.'</FONT></strong><br>
+			- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -<br>
+			</td>
+		  </tr></table>';  
    	
-	Session::addMessageAfterRedirect(__($tabla, 'plugin_contextual'),false, INFO);	
-	
-   $config = new Config();
+	Session::addMessageAfterRedirect(__($tabla, 'plugin_contextual'),false, INFO);   $config = new Config();
    $config->setConfigurationValues('plugin:contextual', ['configuration' => false]);
 
   PluginContextualProfile::initProfile();
@@ -142,17 +158,25 @@ function plugin_contextual_uninstall() {
 
   
    
-	$query = "SELECT * FROM INFORMATION_SCHEMA.TABLES
-			  WHERE TABLE_SCHEMA in ('".$DB->dbdefault."') and table_name LIKE 'glpi_plugin_contextual_%' and TABLE_TYPE = 'BASE TABLE'";
-
-	$result = $DB->query($query);
-	$rows=$DB->numrows($result);
-	if ( $rows > 0) {
-		
+	// Get list of contextual tables using proper API
+	$tables = ['glpi_plugin_contextual_contextuals', 'glpi_plugin_contextual_message_users', 
+	           'glpi_plugin_contextual_messages', 'glpi_plugin_contextual_message_profiles'];
+	$rows = 0;
+	$existing_tables = [];
+	
+	foreach ($tables as $table) {
+		if ($DB->tableExists($table)) {
+			$existing_tables[] = $table;
+			$rows++;
+		}
+	}
+	
+	if ($rows > 0) {
+		global $CFG_GLPI;
 		
 		$tabla='<table>
 			  <tr>
-				<td align="left"><img style="vertical-align:middle;" alt="" src="'.$_SESSION["glpiroot"].'/plugins/contextual/img/erase.png">&nbsp;&nbsp;</td>
+				<td align="left"><img style="vertical-align:middle;" alt="" src="'.$CFG_GLPI['root_doc'].'/plugins/contextual/img/erase.png">&nbsp;&nbsp;</td>
 				<td class="center">&nbsp;
 				<strong>Desinstalación</strong> realizada con <strong><font color="green">Éxito</font></strong> <br>- - - - - - - - - - - - - - - - - - <br>
 				<strong>Plugin Ayuda Contextual</strong> versión <strong><font color="green">'. PLUGIN_CONTEXTUAL_VERSION .'</font></strong>		
@@ -168,22 +192,22 @@ function plugin_contextual_uninstall() {
 			  
 			  ';
 		
-	while ($data=$DB->fetchAssoc($result)){
-		$DB->query("DROP TABLE `".$data["TABLE_NAME"]."`");
-		
-		$tabla.='
+		foreach ($existing_tables as $table_name) {
+			$DB->doQuery("DROP TABLE IF EXISTS `".$table_name."`");
+			
+			$tabla.='
 			  <tr>
-				<td colspan="2" align="left">&nbsp;&nbsp;<img style="vertical-align:middle;" alt="" src="'.$_SESSION["glpiroot"].'/plugins/contextual/img/minus.png">&nbsp;
-				&nbsp;<strong><FONT color="#620613">'.$data["TABLE_NAME"].'</FONT>.</strong>				
+				<td colspan="2" align="left">&nbsp;&nbsp;<img style="vertical-align:middle;" alt="" src="'.$CFG_GLPI['root_doc'].'/plugins/contextual/img/minus.png">&nbsp;
+				&nbsp;<strong><FONT color="#620613">'.$table_name.'</FONT>.</strong>				
 				</td>
 			  </tr>';				
-	}
+		}
 
 		$tabla.='<tr>
 				<td class="center" colspan="2">- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</td>
 			  </tr></table>';
 
-      			Session::addMessageAfterRedirect(__($tabla, 'plugin_contextual'),false, INFO);
+      		Session::addMessageAfterRedirect(__($tabla, 'plugin_contextual'),false, INFO);
 
 	}
 		     

@@ -213,21 +213,36 @@ function plugin_show_content($message) {
 function plugin_contextual_find_objects() {
 	global $DB;
 	$tab   = [];
-	$query = "SELECT TABLE_NAME
-	FROM INFORMATION_SCHEMA.TABLES
-	WHERE TABLE_SCHEMA in ('".$DB->dbdefault."') and table_name LIKE 'glpi_%' and table_name <> 'glpi_displaypreferences' and TABLE_TYPE = 'BASE TABLE'";
-
-	$result = $DB->query($query);
-
-	if ( $DB->numrows($result) > 0) {
-
-		while ($data=$DB->fetchAssoc($result)){
-
-			if (count(explode("glpi_plugin_formcreator_question",$data["TABLE_NAME"]))==1){	
-				array_push($tab , getItemTypeForTable($data["TABLE_NAME"]));
+	
+	// Use criteria API instead of direct query
+	$criteria = [
+		'FROM' => 'information_schema.TABLES',
+		'WHERE' => [
+			'TABLE_SCHEMA' => $DB->dbdefault,
+			'TABLE_NAME' => ['NOT LIKE', '%glpi_displaypreferences%'],
+			'TABLE_NAME' => ['LIKE', 'glpi_%'],
+			'TABLE_TYPE' => 'BASE TABLE'
+		]
+	];
+	
+	try {
+		$result = $DB->request($criteria);
+		
+		if ($result->count() > 0) {
+			foreach ($result as $data) {
+				if (count(explode("glpi_plugin_formcreator_question", $data["TABLE_NAME"])) == 1) {	
+					array_push($tab, getItemTypeForTable($data["TABLE_NAME"]));
+				}
 			}
 		}
-	
+	} catch (Exception $e) {
+		// Fallback: manually list common GLPI tables
+		$common_tables = ['glpi_alerts', 'glpi_documents', 'glpi_entities', 'glpi_groups', 'glpi_items_tickets', 'glpi_tickets', 'glpi_users', 'glpi_computers', 'glpi_monitors', 'glpi_printers', 'glpi_peripherals', 'glpi_software', 'glpi_softwareversions', 'glpi_softwarelicenses', 'glpi_contracts'];
+		foreach ($common_tables as $table) {
+			if ($DB->tableExists($table)) {
+				array_push($tab, getItemTypeForTable($table));
+			}
+		}
 	}
 	
 	return $tab;

@@ -47,7 +47,7 @@ class PluginContextualMessage_Profile extends CommonDBRelation {
    
    static $rightname = "plugin_contextual_message";
 
-   static function canView() {
+   static function canView(): bool {
 
 		return (Session::haveRight(self::$rightname, READ));
 	
@@ -284,23 +284,23 @@ class PluginContextualMessage_Profile extends CommonDBRelation {
 			
 		
    static function install(Migration $migration) {
-      global $DB;
+      global $DB, $CFG_GLPI;
       $table = getTableForItemType(__CLASS__);
       if (!$DB->TableExists($table)) {	  
 		  
          $query = "CREATE TABLE IF NOT EXISTS `$table` (
-         `id` int(11) NOT NULL AUTO_INCREMENT,
-		   `".PluginContextualMessage_Profile::$items_id_1."` int(11) NOT NULL DEFAULT '0',
-		   `".PluginContextualMessage_Profile::$items_id_2."` int(11) NOT NULL DEFAULT '0',         
+         `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+		   `".PluginContextualMessage_Profile::$items_id_1."` BIGINT UNSIGNED NOT NULL DEFAULT '0',
+		   `".PluginContextualMessage_Profile::$items_id_2."` BIGINT UNSIGNED NOT NULL DEFAULT '0',         
 		   PRIMARY KEY (`id`),
 		   UNIQUE KEY `unicity` (`".PluginContextualMessage_Profile::$items_id_1."`,`".PluginContextualMessage_Profile::$items_id_2."`)
-		   ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+		   ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
 		   
-         $DB->query($query) or die ("Error adding table $table");
+         $DB->doQuery($query) or die ("Error adding table $table");
 		 
 		 		$tabla='
 			  <tr>
-				<td colspan="2" align="left">&nbsp;&nbsp;<img style="vertical-align:middle;" alt="" src="'.$_SESSION["glpiroot"].'/plugins/contextual/img/check.png">&nbsp;
+				<td colspan="2" align="left">&nbsp;&nbsp;<img style="vertical-align:middle;" alt="" src="'.$CFG_GLPI['root_doc'].'/plugins/contextual/img/check.png">&nbsp;
 				&nbsp;<strong><FONT color="#3a9b26">'.$table.'</FONT>.</strong>				
 				</td>
 			  </tr>';
