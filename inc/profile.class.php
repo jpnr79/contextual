@@ -1,6 +1,3 @@
-<?php
-/*
- * @version $Id: HEADER 15930 2011-10-25 10:47:55Z jmd $
  -------------------------------------------------------------------------
  GLPI - Gestionnaire Libre de Parc Informatique
  Copyright (C) 2003-2011 by the INDEPNET Development Team.
@@ -25,18 +22,11 @@
  You should have received a copy of the GNU General Public License
  along with GLPI. If not, see <http://www.gnu.org/licenses/>.
  --------------------------------------------------------------------------
- */
+   }
 
-// ----------------------------------------------------------------------
-// Original Author of file: Javier David Marín Zafrilla
-// Purpose of file:
-// ----------------------------------------------------------------------
 
-// Class of the defined type
 
-if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access directly to this file");
-}
+<?php
 
 class PluginContextualProfile extends Profile {
 
@@ -64,21 +54,16 @@ class PluginContextualProfile extends Profile {
 
          self::addDefaultProfileInfos($ID, 
                                     array('plugin_contextual' => 0));
-         $prof->showForm($ID);
       }
       return true;
    }
-   
 
    static function createFirstAccess($profiles_id) {
- 
       //85
       self::addDefaultProfileInfos($profiles_id,
-                                          ['plugin_contextual'         => (READ+UPDATE+CREATE+PURGE),
-                                           'plugin_contextual_message' => (READ+UPDATE+CREATE+PURGE)], true);
-
-   }  
-   
+         ['plugin_contextual'         => (READ+UPDATE+CREATE+PURGE),
+          'plugin_contextual_message' => (READ+UPDATE+CREATE+PURGE)], true);
+   }
     /**
     * @param $profile
    **/

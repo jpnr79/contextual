@@ -10,9 +10,6 @@
 
  LICENSE
 
- This file is part of GLPI.
-
- GLPI is free software; you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
  the Free Software Foundation; either version 2 of the License, or
  (at your option) any later version.
@@ -42,17 +39,8 @@ class PluginContextualMessage_User extends CommonDBRelation {
    static public $itemtype_1 = 'PluginContextualMessage';
    static public $items_id_1 = 'plugin_contextual_messages_id'; 	//getForeignKeyFieldForItemType('PluginContextualMessage');
     
-   static public $itemtype_2 = 'User';
-   static public $items_id_2 = 'users_id';
-   
-   static $rightname = "plugin_contextual_message";
-
-   static function canView(): bool {
-
-		return (Session::haveRight(self::$rightname, READ));
-	
-	 }
-	 
+      static public $itemtype_2 = 'User';
+      static public $items_id_2 = 'users_id';
    static function getTypeName($nb=0) {
       global $LANG;
 	  return _n('Message', 'Mensajes', $nb);
@@ -65,7 +53,6 @@ class PluginContextualMessage_User extends CommonDBRelation {
             $ong[2] = __('Vista Preliminar');
 				return $ong;
 			} else {
-            return '';
          }
 		
 	}

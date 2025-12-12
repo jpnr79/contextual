@@ -11,6 +11,8 @@
 
  LICENSE
 
+declare(strict_types=1);
+
  This file is part of GLPI.
 
  GLPI is free software; you can redistribute it and/or modify
@@ -60,10 +62,6 @@ function plugin_contextual_addLeftJoin($itemtype,$ref_table,$new_table,$linkfiel
 						AND `'.$tabla.'`.`profiles_id` = '.$_SESSION['glpiactiveprofile']["id"].' )';		
 					}
 				
-				}
-	  	break;
-
-	}
 	return "";
 }
 // [FINAL] [CRI] JMZ18G FUNCIÓN PARA CAMBIAR LEFT JOIN POR INNER JOIN CUANDO EL USUARIO NO TIENE PERMISOS DE LECTURA SOBRE EL PLUGIN
@@ -100,7 +98,33 @@ function plugin_contextual_install() {
 	} catch (Exception $e) {
 		// If information_schema query fails, count tables manually
 		$tables = ['glpi_plugin_contextual_contextuals', 'glpi_plugin_contextual_message_users', 'glpi_plugin_contextual_messages', 'glpi_plugin_contextual_message_profiles'];
+				<?php
 		$rows = 0;
+				/*
+				 * @version $Id: HEADER 15930 2011-10-25 10:47:55Z jmd $
+				 * -------------------------------------------------------------------------
+				 * GLPI - Gestionnaire Libre de Parc Informatique
+				 * Copyright (C) 2003-2011 by the INDEPNET Development Team.
+				 * http://indepnet.net/   http://glpi-project.org
+				 * -------------------------------------------------------------------------
+				 * LICENSE
+				 *
+				 * This file is part of GLPI.
+				 *
+				 * GLPI is free software; you can redistribute it and/or modify
+				 * it under the terms of the GNU General Public License as published by
+				 * the Free Software Foundation; either version 2 of the License, or
+				 * (at your option) any later version.
+				 *
+				 * GLPI is distributed in the hope that it will be useful,
+				 * but WITHOUT ANY WARRANTY; without even the implied warranty of
+				 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+				 * GNU General Public License for more details.
+				 *
+				 * You should have received a copy of the GNU General Public License
+				 * along with GLPI. If not, see <http://www.gnu.org/licenses/>.
+				 * --------------------------------------------------------------------------
+				 */
 		foreach ($tables as $table) {
 			if ($DB->tableExists($table)) {
 				$rows++;

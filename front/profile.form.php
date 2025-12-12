@@ -1,4 +1,7 @@
 <?php
+declare(strict_types=1);
+declare(strict_types=1);
+
 /*
  * @version $Id: HEADER 15930 2011-10-25 10:47:55Z jmd $
  -------------------------------------------------------------------------

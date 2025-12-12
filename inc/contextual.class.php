@@ -10,9 +10,6 @@
 
  LICENSE
 
- This file is part of GLPI.
-
- GLPI is free software; you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
  the Free Software Foundation; either version 2 of the License, or
  (at your option) any later version.
@@ -44,12 +41,7 @@ class PluginContextualContextual extends CommonDBTM {
    function canViewItem(): bool {
       return (Session::haveRight(self::$rightname, READ)
               );
-   }
-
-   function canCreateItem(): bool {
-      return Session::haveRight(self::$rightname, CREATE);
-   }
- 
+<?php
    function canUpdateItem(): bool {
       return ((Session::haveRight(self::$rightname, UPDATE)) || ($_SESSION['glpiactiveprofile']['id']==='4'));
    } 
@@ -146,7 +138,8 @@ class PluginContextualContextual extends CommonDBTM {
 			Session::addMessageAfterRedirect(__('			
 			<table>
 	<tr>
-	<td align="left"><img style="vertical-align:middle;" alt="" src="'.$CFG_GLPI['root_doc'].'/plugins/contextual/img/install.png">&nbsp;&nbsp;</td>
+	<?php
+	declare(strict_types=1);
 	<td class="center">&nbsp;
 	<FONT color="#4f35a2"><strong>Instalación</strong> realizada con <strong></font><font color="green">Éxito</font></strong> <br>- - - - - - - - - - - - - - - - - - <br>
 	<font color="green"><strong>Plugin PluginContextualContextual</strong></font><FONT color="#4f35a2"> versión </font><strong><font color="green">'. PLUGIN_CONTEXTUAL_VERSION .'</font></strong>		
