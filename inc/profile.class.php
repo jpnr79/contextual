@@ -100,7 +100,7 @@ class PluginContextualProfile extends Profile {
     * @param $items_id integer id of the profile
     * @param $target value url of target
     *
-    * @return nothing
+   * @return void
     **/
    function showForm($profiles_id=0, $openform=TRUE, $closeform=TRUE) {
 
@@ -130,6 +130,7 @@ class PluginContextualProfile extends Profile {
          Html::closeForm();
       }
       echo "</div>";
+      return;
    }
 
    

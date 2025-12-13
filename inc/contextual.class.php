@@ -38,9 +38,9 @@ class PluginContextualContextual extends CommonDBTM {
       return Session::haveRight(self::$rightname, READ);
    }
 
-   function canViewItem(): bool {
-      return (Session::haveRight(self::$rightname, READ)
-              )
+	function canViewItem(): bool {
+		return (Session::haveRight(self::$rightname, READ));
+	}
 
    function canUpdateItem(): bool {
       return ((Session::haveRight(self::$rightname, UPDATE)) || ($_SESSION['glpiactiveprofile']['id']==='4'));

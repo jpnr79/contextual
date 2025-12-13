@@ -39,10 +39,10 @@ class PluginContextualMessage extends CommonDBTM {
    }
 
    function canViewItem(): bool {
-      return (Session::haveRight(self::$rightname, READ)
-              );
-<?php
-   function canUpdateItem(): bool {
+		return (Session::haveRight(self::$rightname, READ));
+	}
+
+	function canUpdateItem(): bool {
       return ((Session::haveRight(self::$rightname, UPDATE)) || ($_SESSION['glpiactiveprofile']['id']==='4'));
    } 
 

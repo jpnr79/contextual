@@ -127,8 +127,8 @@ class PluginContextualMessage_User extends CommonDBRelation {
             echo "<td width='50%'>";
                $porcent_total = round((($countViews * 100) / $total_users),3);
                $title         = "Usuarios";
-               $series        = "'".$porcent_total."', '".(100-$porcent_total)."'";
-               $labels        = "'".$porcent_total."%', '".(100-$porcent_total)."%'";
+               $series        = [ (float)$porcent_total, (float)(100-$porcent_total) ];
+               $labels        = [ $porcent_total.'%', (100-$porcent_total).'%' ];
                $value_1       = $countViews;
                $value_total_1 = $total_users;  
                $options       = ['color'            => '#88b788',
@@ -141,8 +141,8 @@ class PluginContextualMessage_User extends CommonDBRelation {
             $views = ($item->fields['view']<1 ? 1 : $item->fields['view']); // EVITAR ERROR *** PHP Warning(2): Division by zero
                $porcent_total = round((($countViews * 100) / ($views)),3);
                $title         = "Visitas";
-               $series        = "'".$porcent_total."', '".(100-$porcent_total)."'";
-               $labels        = "'".$porcent_total."%', '".(100-$porcent_total)."%'";
+               $series        = [ (float)$porcent_total, (float)(100-$porcent_total) ];
+               $labels        = [ $porcent_total.'%', (100-$porcent_total).'%' ];
                $value_2       = $item->fields['view'];
                $value_total_2 = $item->fields['view']-$countViews;            
                $options       = ['color'            => '#eceebf',
@@ -540,6 +540,7 @@ class PluginContextualMessage_User extends CommonDBRelation {
 		 Session::addMessageAfterRedirect($tabla);	
 		 
       }
+      return true;
    }   
 
    function updateCounter($id) {

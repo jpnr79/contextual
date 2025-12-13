@@ -35,6 +35,10 @@ if (!defined('GLPI_ROOT')) {
 
 class PluginContextualMessage_Profile extends CommonDBRelation {
 
+   // permissive properties for static analysis
+   static public $rightname = 'plugin_contextual_profile';
+   public $fields = [];
+
    // From CommonDBRelation
    static public $itemtype_1 = 'PluginContextualMessage';
    static public $items_id_1 = 'plugin_contextual_messages_id'; 	//getForeignKeyFieldForItemType('PluginContextualMessage');
@@ -84,7 +88,7 @@ class PluginContextualMessage_Profile extends CommonDBRelation {
       return true;
    }
 
-   static function showProfiles(PluginContextualMessage $message) {
+   static function showProfiles($message) {
          global $DB, $CFG_GLPI;
 	  
          $instID = $message->fields['id'];

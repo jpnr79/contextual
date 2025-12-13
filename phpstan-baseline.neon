@@ -1,0 +1,211 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Call to an undefined static method Toolbox\:\:slugify\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: ajax/countcontextual.php
+
+		-
+			message: '#^Call to an undefined static method Toolbox\:\:unclean_html_cross_side_scripting_deep\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: ajax/countcontextual.php
+
+		-
+			message: '#^Call to an undefined static method Toolbox\:\:unclean_html_cross_side_scripting_deep\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: ajax/showcontextual.php
+
+		-
+			message: '#^Call to an undefined static method Html\:\:getBackUrl\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: front/contextual.form.php
+
+		-
+			message: '#^Class Html referenced with incorrect case\: html\.$#'
+			identifier: class.nameCase
+			count: 1
+			path: front/contextual.form.php
+
+		-
+			message: '#^Call to an undefined static method Search\:\:constructData\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: front/message.php
+
+		-
+			message: '#^Call to an undefined static method Search\:\:constructSQL\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: front/message.php
+
+		-
+			message: '#^Call to an undefined static method Search\:\:displayData\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: front/message.php
+
+		-
+			message: '#^Call to an undefined static method Search\:\:prepareDatasForSearch\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: front/message.php
+
+		-
+			message: '#^Call to an undefined static method Search\:\:showGenericSearch\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: front/message.php
+
+		-
+			message: '#^Call to an undefined static method Html\:\:requireJs\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: front/message_profile.form.php
+
+		-
+			message: '#^Call to an undefined static method ProfileRight\:\:deleteProfileRights\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: hook.php
+
+		-
+			message: '#^Instantiated class Config not found\.$#'
+			identifier: class.notFound
+			count: 1
+			path: hook.php
+
+		-
+			message: '#^Instantiated class Log not found\.$#'
+			identifier: class.notFound
+			count: 1
+			path: hook.php
+
+		-
+			message: '#^Path in include_once\(\) "\.\./\.\./\.\./plugins/contextual/inc/profile\.class\.php" is not a file or it does not exist\.$#'
+			identifier: includeOnce.fileNotFound
+			count: 1
+			path: hook.php
+
+		-
+			message: '#^Call to an undefined static method Html\:\:nullFooter\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: inc/contextual.class.php
+
+		-
+			message: '#^Call to an undefined static method Html\:\:setRichTextContent\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: inc/contextual.class.php
+
+		-
+			message: '#^Call to an undefined static method Html\:\:textarea\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: inc/contextual.class.php
+
+		-
+			message: '#^Method PluginContextualContextual\:\:showToolTip\(\) should return nothing but return statement is missing\.$#'
+			identifier: return.missing
+			count: 1
+			path: inc/contextual.class.php
+
+		-
+			message: '#^Call to an undefined static method Html\:\:nullFooter\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: inc/message.class.php
+
+		-
+			message: '#^Call to an undefined static method Html\:\:setRichTextContent\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: inc/message.class.php
+
+		-
+			message: '#^Call to an undefined static method Html\:\:showDateTimeField\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 2
+			path: inc/message.class.php
+
+		-
+			message: '#^Call to an undefined static method Html\:\:textarea\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: inc/message.class.php
+
+		-
+			message: '#^Access to undefined constant Search\:\:HTML_OUTPUT\.$#'
+			identifier: classConstant.notFound
+			count: 6
+			path: inc/message_profile.class.php
+
+		-
+			message: '#^Call to an undefined static method Html\:\:getMassiveActionCheckBox\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: inc/message_profile.class.php
+
+		-
+			message: '#^Call to an undefined static method Profile\:\:dropdown\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: inc/message_profile.class.php
+
+		-
+			message: '#^Call to an undefined static method Search\:\:showEndLine\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 2
+			path: inc/message_profile.class.php
+
+		-
+			message: '#^Call to an undefined static method Search\:\:showHeaderItem\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: inc/message_profile.class.php
+
+		-
+			message: '#^Call to an undefined static method Search\:\:showItem\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 3
+			path: inc/message_profile.class.php
+
+		-
+			message: '#^Call to an undefined static method Search\:\:showNewLine\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 2
+			path: inc/message_profile.class.php
+
+		-
+			message: '#^Unsafe usage of new static\(\)\.$#'
+			identifier: new.static
+			count: 1
+			path: inc/message_profile.class.php
+
+		-
+			message: '#^Array has 2 duplicate keys with value ''TABLE_NAME'' \(''TABLE_NAME'', ''TABLE_NAME''\)\.$#'
+			identifier: array.duplicateKey
+			count: 1
+			path: setup.php
+
+		-
+			message: '#^Call to an undefined static method Html\:\:requireJs\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 2
+			path: setup.php
+
+		-
+			message: '#^Call to an undefined static method Toolbox\:\:slugify\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: setup.php
+
+		-
+			message: '#^Call to an undefined static method Toolbox\:\:unclean_html_cross_side_scripting_deep\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: setup.php
