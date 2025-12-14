@@ -178,7 +178,7 @@ function plugin_show_content($message) {
     $out.= "<div id='kbanswer'>";
 
     $answer = html_entity_decode($message->fields['content']);
-    $answer = Toolbox::unclean_html_cross_side_scripting_deep($answer);	
+    // Removed Toolbox::unclean_html_cross_side_scripting_deep as it doesn't exist in GLPI 11	
 
     $callback = function ($matches) {
         //1 => tag name, 2 => existing attributes, 3 => title contents
@@ -220,8 +220,10 @@ function plugin_contextual_find_objects() {
 		'FROM' => 'information_schema.TABLES',
 		'WHERE' => [
 			'TABLE_SCHEMA' => $DB->dbdefault,
-			'TABLE_NAME' => ['NOT LIKE', '%glpi_displaypreferences%'],
-			'TABLE_NAME' => ['LIKE', 'glpi_%'],
+			'TABLE_NAME' => [
+				['NOT LIKE', '%glpi_displaypreferences%'],
+				['LIKE', 'glpi_%']
+			],
 			'TABLE_TYPE' => 'BASE TABLE'
 		]
 	];

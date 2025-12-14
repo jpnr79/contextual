@@ -20,7 +20,17 @@ declare(strict_types=1);
  * @return boolean
  */
  
-include_once (GLPI_ROOT."/plugins/contextual/inc/profile.class.php"); 
+include_once (GLPI_ROOT."/plugins/contextual/inc/profile.class.php");
+
+/**
+ * Install the plugin
+ * @return boolean
+ */
+function plugin_contextual_install() {
+    // Initialize profile rights
+    PluginContextualProfile::initProfile();
+    return true;
+}
 
 // [INICIO] [CRI] JMZ18G FUNCIÓN PARA CAMBIAR LEFT JOIN POR INNER JOIN CUANDO EL USUARIO NO TIENE PERMISOS DE LECTURA SOBRE EL PLUGIN
 function plugin_contextual_addLeftJoin($itemtype,$ref_table,$new_table,$linkfield,&$already_link_tables) {
