@@ -124,6 +124,10 @@ function plugin_version_contextual() {
 // Optional : check prerequisites before install : may print errors or add to message after redirect
 function plugin_contextual_check_prerequisites() {
    if (version_compare(GLPI_VERSION, '9.4', 'lt')) {
+       Toolbox::logInFile('contextual', sprintf(
+           'ERROR [%s:%s] GLPI version too low: %s, user=%s',
+           __FILE__, __FUNCTION__, GLPI_VERSION, $_SESSION['glpiname'] ?? 'unknown'
+       ));
        echo "This plugin requires GLPI >= 9.4";
        return false;
    } else {
